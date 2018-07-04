@@ -16,9 +16,6 @@
 
 package com.hadisatrio.libs.android.viewmodelprovider;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.google.auto.service.AutoService;
 import com.hadisatrio.libs.android.viewmodelprovider.internal.ConstructorParameter;
 import com.squareup.javapoet.ClassName;
@@ -215,6 +212,7 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
         final String genClassName = typeElement.getSimpleName() + PROVIDER_CLASS_SUFFIX;
         final List<ConstructorParameter> subjectCtorParams = getConstructorParameters(typeElement);
         final Class viewModelProviderClass = Class.forName(ClassNameProvider.vieModelProviders());
+        final Class nonNullClass = Class.forName(ClassNameProvider.nonNull());
 
         final StringBuilder ctorParamNamesCsv = new StringBuilder();
         for (int i = 0; i < subjectCtorParams.size(); i++) {
@@ -230,9 +228,9 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
         // Generate `get()` method to be called from activities.
         final MethodSpec.Builder activityGetBuilder = MethodSpec.methodBuilder("get")
                 .returns(typeName)
-                .addAnnotation(NonNull.class)
+                .addAnnotation(nonNullClass)
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                .addParameter(activityParameterSpecBuilder.addAnnotation(NonNull.class).build());
+                .addParameter(activityParameterSpecBuilder.addAnnotation(nonNullClass).build());
 
         for (ParameterSpec parameterSpec : buildParameterList(subjectCtorParams)) {
             activityGetBuilder.addParameter(parameterSpec);
@@ -249,9 +247,9 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
         // Generate `get()` method to be called from fragments.
         final MethodSpec.Builder fragmentGetBuilder = MethodSpec.methodBuilder("get")
                 .returns(typeName)
-                .addAnnotation(NonNull.class)
+                .addAnnotation(nonNullClass)
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                .addParameter(fragmentParameterSpecBuilder.addAnnotation(NonNull.class).build());
+                .addParameter(fragmentParameterSpecBuilder.addAnnotation(nonNullClass).build());
 
         fragmentGetBuilder.addParameters(buildParameterList(subjectCtorParams));
 
@@ -331,15 +329,17 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
                 "modelClass"
         );
 
+        final Class nonNullClass = Class.forName(ClassNameProvider.nonNull());
+
         // Define the `create()` method that will be called by ViewModelProviders
         // to actually instantiate the ViewModel.
         final MethodSpec createSpec = MethodSpec.methodBuilder("create")
-                .addAnnotation(NonNull.class)
+                .addAnnotation(nonNullClass)
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addTypeVariable(typeVariableName)
                 .returns(typeVariableName)
-                .addParameter(modelClassParameterSpecBuilder.addAnnotation(NonNull.class).build())
+                .addParameter(modelClassParameterSpecBuilder.addAnnotation(nonNullClass).build())
                 .addStatement("return (T) new $T($L)", typeElement, fieldNamesCsv)
                 .build();
 
@@ -354,8 +354,11 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
     }
 
     private List<ConstructorParameter> getConstructorParameters(TypeElement typeElement)
-            throws DuplicateMainConstructorException {
+            throws DuplicateMainConstructorException, ClassNotFoundException {
         final List<ConstructorParameter> subjectCtorParams = new ArrayList<>();
+
+        final Class nonNullClass = Class.forName(ClassNameProvider.nonNull());
+        final Class nullableClass = Class.forName(ClassNameProvider.nullable());
 
         ExecutableElement mainCtor = null;
         for (Element element : typeElement.getEnclosedElements()) {
@@ -380,9 +383,9 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
                     String name = annotationMirror.getAnnotationType().asElement().getSimpleName().toString();
 
                     if (name.equalsIgnoreCase(NON_NULL_NAME)) {
-                        nullabilityClass = NonNull.class;
+                        nullabilityClass = nonNullClass;
                     } else if (name.equalsIgnoreCase(NULLABLE_NAME)) {
-                        nullabilityClass = Nullable.class;
+                        nullabilityClass = nullableClass;
                     }
                 }
 
