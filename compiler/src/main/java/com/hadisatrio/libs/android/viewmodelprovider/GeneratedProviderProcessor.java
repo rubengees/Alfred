@@ -61,12 +61,6 @@ import javax.tools.Diagnostic;
 @AutoService(Processor.class)
 public final class GeneratedProviderProcessor extends AbstractProcessor {
 
-    private static final String VIEW_MODEL_CLASS_NAME = "android.arch.lifecycle.ViewModel";
-    private static final String VIEW_MODEL_FACTORY_CLASS_NAME = "android.arch.lifecycle.ViewModelProvider.Factory";
-    private static final String VIEW_MODEL_PROVIDERS_CLASS_NAME = "android.arch.lifecycle.ViewModelProviders";
-    private static final String FRAGMENT_ACTIVITY_CLASS_NAME = "android.support.v4.app.FragmentActivity";
-    private static final String FRAGMENT_CLASS_NAME = "android.support.v4.app.Fragment";
-
     private static final String NON_NULL_NAME = "NonNull";
     private static final String NULLABLE_NAME = "Nullable";
 
@@ -190,11 +184,11 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
                 // Basis class (java.lang.Object) reached, so exit.
                 error(classElement, "The class %s annotated with @%s must inherit from %s.",
                         classElement.getQualifiedName().toString(), GeneratedProvider.class.getSimpleName(),
-                        Class.forName(VIEW_MODEL_CLASS_NAME));
+                        Class.forName(ClassNameProvider.vieModel()));
                 return false;
             }
 
-            if (superClassType.toString().equals(VIEW_MODEL_CLASS_NAME)) {
+            if (superClassType.toString().equals(ClassNameProvider.vieModel())) {
                 // Required super class found. Break the loop so we can return.
                 break;
             }
@@ -220,7 +214,7 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
         final TypeName typeName = TypeName.get(typeElement.asType());
         final String genClassName = typeElement.getSimpleName() + PROVIDER_CLASS_SUFFIX;
         final List<ConstructorParameter> subjectCtorParams = getConstructorParameters(typeElement);
-        final Class viewModelProviderClass = Class.forName(VIEW_MODEL_PROVIDERS_CLASS_NAME);
+        final Class viewModelProviderClass = Class.forName(ClassNameProvider.vieModelProviders());
 
         final StringBuilder ctorParamNamesCsv = new StringBuilder();
         for (int i = 0; i < subjectCtorParams.size(); i++) {
@@ -229,7 +223,7 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
         }
 
         final ParameterSpec.Builder activityParameterSpecBuilder = ParameterSpec.builder(
-                ClassName.bestGuess(FRAGMENT_ACTIVITY_CLASS_NAME),
+                ClassName.bestGuess(ClassNameProvider.fragmentActivity()),
                 "activity"
         );
 
@@ -248,7 +242,7 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
         final MethodSpec activityGet = activityGetBuilder.build();
 
         final ParameterSpec.Builder fragmentParameterSpecBuilder = ParameterSpec.builder(
-                ClassName.bestGuess(FRAGMENT_CLASS_NAME),
+                ClassName.bestGuess(ClassNameProvider.fragment()),
                 "fragment"
         );
 
@@ -331,7 +325,7 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
         }
         final MethodSpec ctorSpec = ctorSpecBuilder.build();
 
-        final TypeVariableName typeVariableName = TypeVariableName.get("T", Class.forName(VIEW_MODEL_CLASS_NAME));
+        final TypeVariableName typeVariableName = TypeVariableName.get("T", Class.forName(ClassNameProvider.vieModel()));
         final ParameterSpec.Builder modelClassParameterSpecBuilder = ParameterSpec.builder(
                 ParameterizedTypeName.get(ClassName.get(Class.class), typeVariableName),
                 "modelClass"
@@ -351,7 +345,7 @@ public final class GeneratedProviderProcessor extends AbstractProcessor {
 
         // Define the class using the previously defined specs.
         return TypeSpec.classBuilder(genClassName)
-                .addSuperinterface(ClassName.bestGuess(VIEW_MODEL_FACTORY_CLASS_NAME))
+                .addSuperinterface(ClassName.bestGuess(ClassNameProvider.vieModelFactory()))
                 .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
                 .addFields(fieldSpecs)
                 .addMethod(ctorSpec)
