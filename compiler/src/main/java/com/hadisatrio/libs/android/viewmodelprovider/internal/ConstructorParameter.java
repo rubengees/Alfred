@@ -19,22 +19,24 @@ package com.hadisatrio.libs.android.viewmodelprovider.internal;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.squareup.javapoet.ClassName;
+
 import javax.lang.model.type.TypeMirror;
 
 public class ConstructorParameter {
 
-    private final Class<?> nullabilityClass;
+    private final ClassName nullabilityClass;
     private final TypeMirror type;
     private final String name;
 
-    public ConstructorParameter(@Nullable Class<?> nullabilityClass, @NonNull TypeMirror type,
-                                @NonNull String name) {
+    public ConstructorParameter(@Nullable ClassName nullabilityClass, @NonNull TypeMirror type, @NonNull String name) {
         this.nullabilityClass = nullabilityClass;
         this.type = type;
         this.name = name;
     }
 
-    @Nullable public Class<?> getNullabilityClass() {
+    @Nullable
+    public ClassName getNullabilityClass() {
         return nullabilityClass;
     }
 

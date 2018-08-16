@@ -12,8 +12,6 @@ repositories {
 }
 
 dependencies {
-    runtime androidApi
-
     implementation alfredAnnotations
 
     implementation autoservice
