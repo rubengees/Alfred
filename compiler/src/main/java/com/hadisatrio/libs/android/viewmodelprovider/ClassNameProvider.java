@@ -20,13 +20,41 @@ import com.squareup.javapoet.ClassName;
 
 class ClassNameProvider {
 
-    private static final String ANDROID_X_VIEW_MODEL_CLASS_NAME = "androidx.lifecycle.ViewModel";
-    private static final String ANDROID_X_VIEW_MODEL_FACTORY_CLASS_NAME = "androidx.lifecycle.ViewModelProvider.Factory";
-    private static final String ANDROID_X_VIEW_MODEL_PROVIDERS_CLASS_NAME = "androidx.lifecycle.ViewModelProviders";
-    private static final String ANDROID_X_FRAGMENT_ACTIVITY_CLASS_NAME = "androidx.fragment.app.FragmentActivity";
-    private static final String ANDROID_X_FRAGMENT_CLASS_NAME = "androidx.fragment.app.Fragment";
-    private static final String ANDROID_X_NON_NULL_CLASS_NAME = "androidx.annotation.NonNull";
-    private static final String ANDROID_X_NULLABLE_CLASS_NAME = "androidx.annotation.Nullable";
+    private static final ClassName ANDROID_X_VIEW_MODEL_CLASS_NAME = ClassName.get(
+            "androidx.lifecycle",
+            "ViewModel"
+    );
+
+    private static final ClassName ANDROID_X_VIEW_MODEL_PROVIDER_FACTORY_CLASS_NAME = ClassName.get(
+            "androidx.lifecycle",
+            "ViewModelProvider",
+            "Factory"
+    );
+
+    private static final ClassName ANDROID_X_VIEW_MODEL_PROVIDERS_CLASS_NAME = ClassName.get(
+            "androidx.lifecycle",
+            "ViewModelProviders"
+    );
+
+    private static final ClassName ANDROID_X_FRAGMENT_ACTIVITY_CLASS_NAME = ClassName.get(
+            "androidx.fragment.app",
+            "FragmentActivity"
+    );
+
+    private static final ClassName ANDROID_X_FRAGMENT_CLASS_NAME = ClassName.get(
+            "androidx.fragment.app",
+            "Fragment"
+    );
+
+    private static final ClassName ANDROID_X_NON_NULL_CLASS_NAME = ClassName.get(
+            "androidx.annotation",
+            "NonNull"
+    );
+
+    private static final ClassName ANDROID_X_NULLABLE_CLASS_NAME = ClassName.get(
+            "androidx.annotation",
+            "Nullable"
+    );
 
     private static final ClassName VIEW_MODEL_PROVIDER_FACTORY_CLASS_NAME = ClassName.get(
             "android.arch.lifecycle",
@@ -66,9 +94,9 @@ class ClassNameProvider {
 
     static ClassName vieModel() {
         try {
-            Class clazz = Class.forName(ANDROID_X_VIEW_MODEL_CLASS_NAME);
+            Class.forName(ANDROID_X_VIEW_MODEL_CLASS_NAME.toString());
 
-            return ClassName.get(clazz);
+            return ANDROID_X_VIEW_MODEL_CLASS_NAME;
         } catch (ClassNotFoundException e) {
             return VIEW_MODEL_CLASS_NAME;
         }
@@ -76,9 +104,9 @@ class ClassNameProvider {
 
     static ClassName vieModelFactory() {
         try {
-            Class clazz = Class.forName(ANDROID_X_VIEW_MODEL_FACTORY_CLASS_NAME);
+            Class.forName(ANDROID_X_VIEW_MODEL_CLASS_NAME.toString());
 
-            return ClassName.get(clazz);
+            return ANDROID_X_VIEW_MODEL_PROVIDER_FACTORY_CLASS_NAME;
         } catch (ClassNotFoundException e) {
             return VIEW_MODEL_PROVIDER_FACTORY_CLASS_NAME;
         }
@@ -86,9 +114,9 @@ class ClassNameProvider {
 
     static ClassName vieModelProviders() {
         try {
-            Class clazz = Class.forName(ANDROID_X_VIEW_MODEL_PROVIDERS_CLASS_NAME);
+            Class.forName(ANDROID_X_VIEW_MODEL_CLASS_NAME.toString());
 
-            return ClassName.get(clazz);
+            return ANDROID_X_VIEW_MODEL_PROVIDERS_CLASS_NAME;
         } catch (ClassNotFoundException e) {
             return VIEW_MODEL_PROVIDERS_CLASS_NAME;
         }
@@ -96,9 +124,9 @@ class ClassNameProvider {
 
     static ClassName fragmentActivity() {
         try {
-            Class clazz = Class.forName(ANDROID_X_FRAGMENT_ACTIVITY_CLASS_NAME);
+            Class.forName(ANDROID_X_VIEW_MODEL_CLASS_NAME.toString());
 
-            return ClassName.get(clazz);
+            return ANDROID_X_FRAGMENT_ACTIVITY_CLASS_NAME;
         } catch (ClassNotFoundException e) {
             return FRAGMENT_ACTIVITY_CLASS_NAME;
         }
@@ -106,9 +134,9 @@ class ClassNameProvider {
 
     static ClassName fragment() {
         try {
-            Class clazz = Class.forName(ANDROID_X_FRAGMENT_CLASS_NAME);
+            Class.forName(ANDROID_X_VIEW_MODEL_CLASS_NAME.toString());
 
-            return ClassName.get(clazz);
+            return ANDROID_X_FRAGMENT_CLASS_NAME;
         } catch (ClassNotFoundException e) {
             return FRAGMENT_CLASS_NAME;
         }
@@ -116,9 +144,9 @@ class ClassNameProvider {
 
     static ClassName nonNull() {
         try {
-            Class clazz = Class.forName(ANDROID_X_NON_NULL_CLASS_NAME);
+            Class.forName(ANDROID_X_VIEW_MODEL_CLASS_NAME.toString());
 
-            return ClassName.get(clazz);
+            return ANDROID_X_NON_NULL_CLASS_NAME;
         } catch (ClassNotFoundException e) {
             return NON_NULL_CLASS_NAME;
         }
@@ -126,9 +154,9 @@ class ClassNameProvider {
 
     static ClassName nullable() {
         try {
-            Class clazz = Class.forName(ANDROID_X_NULLABLE_CLASS_NAME);
+            Class.forName(ANDROID_X_VIEW_MODEL_CLASS_NAME.toString());
 
-            return ClassName.get(clazz);
+            return ANDROID_X_NULLABLE_CLASS_NAME;
         } catch (ClassNotFoundException e) {
             return NULLABLE_CLASS_NAME;
         }
